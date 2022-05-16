@@ -24,7 +24,8 @@ export async function run() {
       await execShellCommand(`curl -sL https://github.com/owenthereal/upterm/releases/download/${UPTERM_VERSION}/upterm_linux_amd64.tar.gz | tar zxvf - -C /tmp upterm && sudo install /tmp/upterm /usr/local/bin/`)
       await execShellCommand("if ! command -v tmux &>/dev/null; then sudo apt-get -y install tmux; fi")
     } else {
-      await execShellCommand("brew install owenthereal/upterm/upterm")
+      await execShellCommand(`curl -sL https://github.com/owenthereal/upterm/releases/download/${UPTERM_VERSION}/upterm_darwin_amd64.tar.gz | tar zxvf - -C /tmp upterm && sudo install /tmp/upterm /usr/local/bin/`)
+      // await execShellCommand("brew install owenthereal/upterm/upterm")
       await execShellCommand("brew install tmux")
     }
     core.debug("Installed dependencies successfully")
@@ -35,7 +36,7 @@ export async function run() {
       fs.mkdirSync(sshPath, { recursive: true })
       try {
         await execShellCommand(`ssh-keygen -q -t rsa -N "" -f ~/.ssh/id_rsa; ssh-keygen -q -t ed25519 -N "" -f ~/.ssh/id_ed25519`);
-      } catch { }    
+      } catch { }
       core.debug("Generated SSH keys successfully")
     } else {
       core.debug("SSH key already exists")
